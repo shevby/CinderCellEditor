@@ -38,6 +38,7 @@ do
             mkdir bin/sfml
             mv -v SFML-2.5.1-macos-clang/* bin/sfml/
             rm -rfv SFML-2.5.1-macos-clang
+            cp -r bin/sfml/extlibs/* bin/sfml/Frameworks
             ;;
 
         2)
