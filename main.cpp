@@ -3,9 +3,9 @@
 #include "CinderCellEditor.h"
 
 
-int main(int argc, char *argv[]) // Don't forget first integral argument 'argc'
+int main(int argc, char *argv[])
 {
-  std::string exeName = argv[0]; // Name of the current exec program
+  std::string exeName = argv[0];
   std::vector<std::string> args;
 
   if (argc > 1) {
@@ -15,7 +15,6 @@ int main(int argc, char *argv[]) // Don't forget first integral argument 'argc'
 
   CinderCellEditor cce;
 
-  std::cout << args[0];
   cce.view(args[0]);
 
   return cce.exec();
