@@ -4,19 +4,18 @@
 #include <iostream>
 #include <fstream>
 
-#include "Renderable.h"
+#include "Item.h"
 #include "constants.h"
 
-class CinderMap: public Renderable {
+class CinderMap: public Item {
     uint32_t height = 0;
     uint32_t width = 0;
-
-    std::vector<Cinder::Biom> map;
 
     sf::Texture texture;
 public:
     CinderMap(sf::RenderWindow & w, std::vector<sf::Texture> & t);
     CinderMap(sf::RenderWindow & w, std::vector<sf::Texture> & t, std::string filePath);
+    virtual ~CinderMap();
     virtual void render();
 
 };

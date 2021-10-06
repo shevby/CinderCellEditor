@@ -6,7 +6,7 @@
 
 #include <SFML/Window.hpp>
 
-#include "Renderable.h"
+#include "Item.h"
 #include "CinderMap.h"
 #include "Controls.h"
 
@@ -33,7 +33,7 @@ class CinderCellEditor
     sf::View _camera{sf::FloatRect{0.f, 0.f, WIDTH, HEIGHT}};
 
     Controls _input;
-    std::vector<Renderable*> _renders;
+    std::vector<Item*> _items;
     std::vector<sf::Texture> _textures;
 
     float _zoom = 1;
@@ -41,6 +41,7 @@ class CinderCellEditor
 public:
 
     CinderCellEditor();
+    ~CinderCellEditor();
 
     float deltaTime;
 

@@ -2,7 +2,7 @@
 
 
 
-CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Renderable{w, t}
+CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w, t}
 {
 
 }
@@ -39,6 +39,11 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
     }
 
     texture.loadFromImage(img);
+
+}
+
+CinderMap::~CinderMap()
+{
 
 }
 

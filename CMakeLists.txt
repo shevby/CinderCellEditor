@@ -8,7 +8,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(SOURCES
     main.cpp
     CinderCellEditor.cpp
-    Renderable.cpp
+    Item.cpp
     CinderMap.cpp
     Controls.cpp
     )
@@ -16,7 +16,7 @@ set(SOURCES
 set(HEADERS
     constants.h
     CinderCellEditor.h
-    Renderable.h
+    Item.h
     CinderMap.h
     Controls.h
     )

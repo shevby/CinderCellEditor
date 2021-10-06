@@ -11,6 +11,13 @@ CinderCellEditor::CinderCellEditor() : _input{_window}
 
 }
 
+CinderCellEditor::~CinderCellEditor()
+{
+    for(auto p : _items) {
+        delete p;
+    }
+}
+
 bool CinderCellEditor::open(std::string filepath)
 {
 
@@ -18,7 +25,7 @@ bool CinderCellEditor::open(std::string filepath)
 
 bool CinderCellEditor::view(std::string filepath)
 {
-    _renders.push_back(new CinderMap(_window, _textures, filepath));
+    _items.push_back(new CinderMap(_window, _textures, filepath));
 
     _input.listenKeys(sf::Keyboard::W, std::bind(&CinderCellEditor::moveUp, this));
     _input.listenKeys(sf::Keyboard::S, std::bind(&CinderCellEditor::moveDown, this));
@@ -43,7 +50,7 @@ int CinderCellEditor::exec()
 
         _window.clear();
 
-        for(auto r : _renders) {
+        for(auto r : _items) {
             r->render();
         }
 
