@@ -7,11 +7,18 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES
     main.cpp
-
+    CinderCellEditor.cpp
+    Renderable.cpp
+    CinderMap.cpp
+    Controls.cpp
     )
 
 set(HEADERS
     constants.h
+    CinderCellEditor.h
+    Renderable.h
+    CinderMap.h
+    Controls.h
     )
 
 set(SFML_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/bin/sfml/include")

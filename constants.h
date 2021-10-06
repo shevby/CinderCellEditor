@@ -14,7 +14,7 @@ namespace Cinder {
     MapTypes mapType;
     uint32_t width;
     uint32_t height;
-    uint8_t * map;
+    uint8_t map;
   };
 
   enum class Biomes {
