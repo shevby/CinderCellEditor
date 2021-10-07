@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.5)
 
 project(CinderCellEditor LANGUAGES CXX)
 
+set(VERSION 0.2)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -11,6 +13,7 @@ set(SOURCES
     Item.cpp
     CinderMap.cpp
     Controls.cpp
+    switch.cpp
     )
 
 set(HEADERS
@@ -19,6 +22,7 @@ set(HEADERS
     Item.h
     CinderMap.h
     Controls.h
+    switch.h
     )
 
 set(SFML_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/bin/sfml/include")
@@ -29,6 +33,8 @@ include_directories(${SFML_INCLUDE_DIR})
 
 find_package(SFML 2.5.1 COMPONENTS system window graphics network audio)
 
-add_executable(CinderCellEditor ${SOURCES} ${HEADERS})
+add_executable(cce ${SOURCES} ${HEADERS})
 
-target_link_libraries (CinderCellEditor sfml-graphics sfml-window sfml-system)
+target_link_libraries (cce sfml-graphics sfml-window sfml-system)
+
+add_compile_definitions(VERSION="${VERSION}")

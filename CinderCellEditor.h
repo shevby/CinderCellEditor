@@ -13,6 +13,11 @@
 const uint32_t WIDTH = 1280;
 const uint32_t HEIGHT = 720;
 
+enum class Modes {
+    VIEW = 0,
+    TO_PNG
+};
+
 const std::vector<std::string> TEXTURE_PATHS = {
     "resources/textures/biomes/water.png",
     "resources/textures/biomes/field.png",
@@ -29,6 +34,7 @@ const float CAMERA_MOVE_SPEED = 1000;
 
 class CinderCellEditor
 {
+    Modes _mode;
     sf::RenderWindow _window{sf::VideoMode(WIDTH, HEIGHT), "Cinder Cell Editor"};
     sf::View _camera{sf::FloatRect{0.f, 0.f, WIDTH, HEIGHT}};
 
@@ -47,6 +53,7 @@ public:
 
     bool open(std::string filepath);
     bool view(std::string filepath);
+    bool toPng(std::string filepath);
 
     int exec();
 

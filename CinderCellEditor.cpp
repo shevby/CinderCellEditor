@@ -25,6 +25,8 @@ bool CinderCellEditor::open(std::string filepath)
 
 bool CinderCellEditor::view(std::string filepath)
 {
+    _mode = Modes::VIEW;
+
     _items.push_back(new CinderMap(_window, _textures, filepath));
 
     _input.listenKeys(sf::Keyboard::W, std::bind(&CinderCellEditor::moveUp, this));
@@ -37,10 +39,22 @@ bool CinderCellEditor::view(std::string filepath)
 
 }
 
+bool CinderCellEditor::toPng(std::string filepath)
+{
+    _mode = Modes::TO_PNG;
+
+    _items.push_back(new CinderMap(_window, _textures, filepath));
+
+}
+
 
 int CinderCellEditor::exec()
 {
     sf::Clock clock;
+
+    if(_mode == Modes::TO_PNG) {
+        return dynamic_cast<CinderMap*>(_items[0])->toPng();
+    }
 
     while (_window.isOpen()) {
         deltaTime = clock.getElapsedTime().asSeconds();

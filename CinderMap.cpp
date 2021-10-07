@@ -7,8 +7,10 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w,
 
 }
 
-CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::string filePath) : CinderMap{w, t}
+CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::string path) : CinderMap{w, t}
 {
+    filePath = path;
+
     std::ifstream input{filePath, std::ios::binary};
     std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(input), {});
 
@@ -40,6 +42,24 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
 
     texture.loadFromImage(img);
 
+}
+
+int CinderMap::toPng()
+{
+    sf::Image img = texture.copyToImage();
+
+    std::cout << "\nConverting " << filePath << " to PNG. Output file: " << filePath << ".png ..." << std::endl;
+
+    auto ret = img.saveToFile(filePath + ".png");
+
+    if(ret) {
+        std::cout << "Done" << std::endl;
+    }
+    else {
+        std::cout << "Failed!" << std::endl;
+    }
+
+    return ret ? 0 : 1;
 }
 
 CinderMap::~CinderMap()

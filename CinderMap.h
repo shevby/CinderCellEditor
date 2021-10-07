@@ -8,13 +8,15 @@
 #include "constants.h"
 
 class CinderMap: public Item {
+    std::string filePath;
     uint32_t height = 0;
     uint32_t width = 0;
 
     sf::Texture texture;
 public:
     CinderMap(sf::RenderWindow & w, std::vector<sf::Texture> & t);
-    CinderMap(sf::RenderWindow & w, std::vector<sf::Texture> & t, std::string filePath);
+    CinderMap(sf::RenderWindow & w, std::vector<sf::Texture> & t, std::string path);
+    int toPng();
     virtual ~CinderMap();
     virtual void render();
 
