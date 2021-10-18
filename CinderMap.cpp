@@ -40,7 +40,11 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
         }
     }
 
+
     texture.loadFromImage(img);
+
+    map = sf::RectangleShape{sf::Vector2f(width * TILE_WIDTH, height * TILE_HEIGHT)};
+    map.setTexture(&texture);
 
 }
 
@@ -59,6 +63,7 @@ int CinderMap::toPng()
         std::cout << "Failed!" << std::endl;
     }
 
+
     return ret ? 0 : 1;
 }
 
@@ -69,9 +74,6 @@ CinderMap::~CinderMap()
 
 void CinderMap::render()
 {
-    sf::RectangleShape map{sf::Vector2f(width * TILE_WIDTH, height * TILE_HEIGHT)};
-    map.setTexture(&texture);
-
     window.draw(map);
 }
 

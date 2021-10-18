@@ -17,9 +17,27 @@ then
     exit
 fi
 
-cmd=(dialog --keep-tite --menu "Installing SFML2.5.1. Please, select OS:" 22 76 16)
+if ! command -v cmake &> /dev/null
+then
+    echo "'cmake' could not be found, please install"
+    exit
+fi
 
-options=(1 "macOS"
+if ! command -v git &> /dev/null
+then
+    echo "'git' could not be found, please install"
+    exit
+fi
+
+if ! command -v make &> /dev/null
+then
+    echo "'make' could not be found, please install"
+    exit
+fi
+
+cmd=(dialog --keep-tite --menu "Building SFML. Please, select OS:" 22 76 16)
+
+options=(1 "macOS ARM"
          2 "Linux"
          3 "Windows")
 
@@ -29,18 +47,25 @@ for choice in $choices
 do
     case $choice in
         1)
-            wget -O sfml.tar.gz https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-macOS-clang.tar.gz
-            7z x sfml.tar.gz
-            rm sfml.tar.gz
-            7z x sfml.tar
-            rm sfml.tar
+            git clone https://github.com/SFML/SFML
+            cd SFML
+            printf "set(CMAKE_OSX_ARCHITECTURES \"arm64\" CACHE STRING \"macOS architecture to build; 64-bit is expected\" FORCE)\n" > tmp.txt
+            cat CMakeLists.txt >> tmp.txt
+            mv tmp.txt CMakeLists.txt
+            mkdir build
+            cd build
+            cmake ../
+            make
+            cd ../..
             mkdir bin
             mkdir bin/sfml
-            mv -v SFML-2.5.1-macos-clang/* bin/sfml/
-            rm -rfv SFML-2.5.1-macos-clang
-            cp -r bin/sfml/extlibs/* bin/sfml/Frameworks
+            mv -v SFML/build/lib bin/sfml
+            mv -v SFML/include bin/sfml
+            mv SFML/license.md bin/sfml
+            mv -v SFML/extlibs/libs-osx/Frameworks/* bin/sfml/lib
+            rm -rfv SFML
+            printf "\n\n\nSFML has been configured"
             ;;
-
         2)
             wget -O sfml.tar.gz https://github.com/SFML/SFML/releases/download/2.5.1/SFML-2.5.1-linux-gcc-64-bit.tar.gz
             7z x sfml.tar.gz

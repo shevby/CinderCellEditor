@@ -3,19 +3,23 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include <SFML/Window.hpp>
 
 #include "Item.h"
 #include "CinderMap.h"
 #include "Controls.h"
+#include "Cursor.h"
+#include "Overlay.h"
 
 const uint32_t WIDTH = 1280;
 const uint32_t HEIGHT = 720;
 
 enum class Modes {
     VIEW = 0,
-    TO_PNG
+    TO_PNG,
+    EDIT
 };
 
 const std::vector<std::string> TEXTURE_PATHS = {
@@ -32,6 +36,10 @@ const std::vector<std::string> TEXTURE_PATHS = {
 
 const float CAMERA_MOVE_SPEED = 1000;
 
+/*!
+ * \brief The CinderCellEditor class
+ * entry of the application, which instantiates all modules and connects them
+ */
 class CinderCellEditor
 {
     Modes _mode;
@@ -39,8 +47,9 @@ class CinderCellEditor
     sf::View _camera{sf::FloatRect{0.f, 0.f, WIDTH, HEIGHT}};
 
     Controls _input;
-    std::vector<Item*> _items;
+    std::vector<std::shared_ptr<Item>> _items;
     std::vector<sf::Texture> _textures;
+    std::shared_ptr<Cursor> _cursor;
 
     float _zoom = 1;
 
@@ -51,20 +60,79 @@ public:
 
     float deltaTime;
 
-    bool open(std::string filepath);
-    bool view(std::string filepath);
-    bool toPng(std::string filepath);
+    /*!
+     * \brief edit
+     * Sets application to the EDIT Mode
+     * \param filepath
+     * path to the raw map
+     */
+    void edit(std::string filepath);
+    /*!
+     * \brief view
+     * Sets application to the VIEW Mode
+     * \param filepath
+     * path to the raw map
+     */
+    void view(std::string filepath);
+    /*!
+     * \brief toPng
+     * Sets application to the TO_PNG Mode
+     * \param filepath
+     * path to the raw map
+     */
+    void toPng(std::string filepath);
 
+    /*!
+     * \brief exec
+     * Starts the main loop and executes it 'till the main window is opened
+     * \return
+     */
     int exec();
 
     //controls
+    /*!
+      * \brief moveUp
+      * moves the main view up
+      */
      void moveUp();
+     /*!
+      * \brief moveDown
+      * moves the main view down
+      */
      void moveDown();
+     /*!
+      * \brief moveLeft
+      * moves the main view left
+      */
      void moveLeft();
+     /*!
+      * \brief moveRight
+      * moves the main view right
+      */
      void moveRight();
+     /*!
+      * \brief resetPosition
+      * resets position of the main view to {0, 0}
+      */
      void resetPosition();
+     /*!
+      * \brief zoomIn
+      * zoom in the map
+      */
      void zoomIn();
+     /*!
+      * \brief zoomOut
+      * zoom out the map
+      */
      void zoomOut();
+     /*!
+      * \brief handleMouse
+      * Handles and redirects mouse events to the _cursor
+      * \param event
+      * structure which represents mouse actions
+      */
+     void handleMouse(MouseEvent event);
+     void addOverlay();
 };
 
 #endif // CINDERCELLEDITOR_H

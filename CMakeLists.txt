@@ -14,16 +14,10 @@ set(SOURCES
     CinderMap.cpp
     Controls.cpp
     switch.cpp
+    Cursor.cpp
+    Overlay.cpp
     )
 
-set(HEADERS
-    constants.h
-    CinderCellEditor.h
-    Item.h
-    CinderMap.h
-    Controls.h
-    switch.h
-    )
 
 set(SFML_INCLUDE_DIR "${PROJECT_SOURCE_DIR}/bin/sfml/include")
 set(SFML_LIBRARY_DIR "${PROJECT_SOURCE_DIR}/bin/sfml/lib")
@@ -31,9 +25,7 @@ set(SFML_LIBRARY_DIR "${PROJECT_SOURCE_DIR}/bin/sfml/lib")
 link_directories(${SFML_LIBRARY_DIR})
 include_directories(${SFML_INCLUDE_DIR})
 
-find_package(SFML 2.5.1 COMPONENTS system window graphics network audio)
-
-add_executable(cce ${SOURCES} ${HEADERS})
+add_executable(cce ${SOURCES})
 
 target_link_libraries (cce sfml-graphics sfml-window sfml-system)
 

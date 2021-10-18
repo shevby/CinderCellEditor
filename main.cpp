@@ -4,17 +4,22 @@
 #include "switch.h"
 
 
+
+#define voidCallback [&]()->void
+
+
 void printHelp() {
     using namespace std;
     cout << endl << "Cinder Cell Editor " << VERSION << endl << endl;
     cout << "  cce                  >show help" << endl;
     cout << "  cce view [file]      >review map without editing" << endl;
     cout << "  cce topng [file]     >convert raw map to png with name [file].png" << endl;
-    cout << "  cce open [file]      >TBD" << endl << endl;
+    cout << "  cce open|edit [file]      >TBD" << endl << endl;
 }
 
 int main(int argc, char *argv[])
 {
+
     std::string exeName = argv[0];
     std::vector<std::string> args;
 
@@ -35,6 +40,12 @@ int main(int argc, char *argv[])
     })
     .Case("view", voidCallback {
         cce.view(args[1]);
+    })
+    .Case("open", voidCallback {
+        cce.edit(args[1]);
+    })
+    .Case("edit", voidCallback {
+        cce.edit(args[1]);
     }).exec();
 
     if(_default) {

@@ -6,7 +6,6 @@
 #include <iostream>
 #include <vector>
 
-#define voidCallback [&]()->void
 
 class Switchable {
 
