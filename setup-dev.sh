@@ -48,6 +48,9 @@ do
     case $choice in
         1)
             git clone https://github.com/SFML/SFML
+            git submodule init
+            git submodule update
+            cat imgui-sfml/imconfig-SFML.h >> imgui/imconfig.h
             cd SFML
             printf "set(CMAKE_OSX_ARCHITECTURES \"arm64\" CACHE STRING \"macOS architecture to build; 64-bit is expected\" FORCE)\n" > tmp.txt
             cat CMakeLists.txt >> tmp.txt
