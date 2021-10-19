@@ -6,13 +6,13 @@
 
 class Cursor : public Item
 {
-    uint8_t currentTexture{0};
-    sf::Vector2f startPos{-1, -1};
-    sf::Vector2f pos;
-    sf::Vector2f size{TILE_WIDTH, TILE_HEIGHT};
-    sf::RectangleShape rectangle;
-    std::vector<sf::Texture> cursorTextures;
-    std::function<void()> onDrawAreaSelectedCallback{nullptr};
+    uint8_t _currentTexture{0};
+    sf::Vector2f _startPos{-1, -1};
+    sf::Vector2f _pos;
+    sf::Vector2f _size{TILE_WIDTH, TILE_HEIGHT};
+    sf::RectangleShape _rectangle;
+    std::vector<sf::Texture> _cursorTextures;
+    std::function<void()> _onDrawAreaSelectedCallback{nullptr};
 
 public:
     Cursor(sf::RenderWindow &w, std::vector<sf::Texture> &t);
@@ -45,4 +45,5 @@ public:
      * Will be called when the user selects the area do draw with some tile
      */
     void onDrawAreaSelected(std::function<void()> callback);
+    void setCurrentTexture(uint8_t newCurrentTexture);
 };

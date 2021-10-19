@@ -25,6 +25,11 @@ void Controls::exec()
     mouseEvent.wheelDelta = 0;
 
     if (window.pollEvent(event)) {
+        ImGui::SFML::ProcessEvent(event);
+        
+        if(ImGui::GetIO().WantCaptureMouse) {
+            return;
+        }
 
         if(event.type == sf::Event::Closed) {
             window.close();

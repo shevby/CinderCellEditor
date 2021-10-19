@@ -6,15 +6,24 @@
 #include <memory>
 
 #include <SFML/Window.hpp>
+#include <imgui.h>
+#include <imgui-SFML.h>
 
 #include "Item.h"
 #include "CinderMap.h"
 #include "Controls.h"
 #include "Cursor.h"
 #include "Overlay.h"
+#include "constants.h"
 
-const uint32_t WIDTH = 1280;
-const uint32_t HEIGHT = 720;
+#define DRAW_CURSOR_SETTER(TEXTURE) \
+    if(ImGui::ImageButton(_textures[static_cast<int>(TEXTURE)], sf::Vector2f{64, 64})) {\
+        _cursor->setCurrentTexture(static_cast<int>(TEXTURE));\
+    }\
+    ImGui::SameLine();
+
+const uint32_t WIDTH = 1960;
+const uint32_t HEIGHT = 1080;
 
 enum class Modes {
     VIEW = 0,
@@ -81,6 +90,8 @@ public:
      * path to the raw map
      */
     void toPng(std::string filepath);
+
+    void drawGui();
 
     /*!
      * \brief exec

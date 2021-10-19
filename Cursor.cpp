@@ -26,28 +26,33 @@ sf::Texture toCursorTexture(sf::Texture & t) {
 
 const sf::Vector2f &Cursor::getPos() const
 {
-    return pos;
+    return _pos;
 }
 
 const sf::Vector2f &Cursor::getSize() const
 {
-    return size;
+    return _size;
 }
 
 uint8_t Cursor::getCurrentTexture() const
 {
-    return currentTexture;
+    return _currentTexture;
 }
 
 void Cursor::onDrawAreaSelected(std::function<void ()> callback)
 {
-    onDrawAreaSelectedCallback = callback;
+    _onDrawAreaSelectedCallback = callback;
+}
+
+void Cursor::setCurrentTexture(uint8_t newCurrentTexture)
+{
+    _currentTexture = newCurrentTexture;
 }
 
 Cursor::Cursor(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w, t}
 {
     for(auto texture : textures) {
-        cursorTextures.push_back(toCursorTexture(texture));
+        _cursorTextures.push_back(toCursorTexture(texture));
     }
 
 
@@ -60,27 +65,24 @@ void Cursor::handleMouse(MouseEvent event)
     position.x = static_cast<int>(position.x - static_cast<int>(position.x) % 16);
     position.y = static_cast<int>(position.y - static_cast<int>(position.y) % 16);
 
-    if(event.left && startPos.x >= 0 && startPos.y >= 0) {
-        std::cout << "Create" << std::endl;
-        if(onDrawAreaSelectedCallback != nullptr) {
-            onDrawAreaSelectedCallback();
+    if(event.left && _startPos.x >= 0 && _startPos.y >= 0) {
+        if(_onDrawAreaSelectedCallback != nullptr) {
+            _onDrawAreaSelectedCallback();
         }
         reset();
         return;
     }
 
-    if(startPos.x >= 0 && startPos.y >=0) {
-        std::cout << "Start draw" << std::endl;
-        size = (position - startPos);
-        size += sf::Vector2f{ static_cast<float>(size.x >= 0 ? TILE_WIDTH: 0), static_cast<float>(size.y >= 0 ? TILE_HEIGHT : 0)};
+    if(_startPos.x >= 0 && _startPos.y >=0) {
+        _size = (position - _startPos);
+        _size += sf::Vector2f{ static_cast<float>(_size.x >= 0 ? TILE_WIDTH: 0), static_cast<float>(_size.y >= 0 ? TILE_HEIGHT : 0)};
     }
     else {
-        pos = position;
+        _pos = position;
     }
 
     if(event.left) {
-        std::cout << "Set start pos" << std::endl;
-        startPos = position;
+        _startPos = position;
     } else if (event.right) {
         reset();
     }
@@ -90,18 +92,18 @@ void Cursor::handleMouse(MouseEvent event)
 
 void Cursor::reset()
 {
-    startPos = {-1, -1};
-    size = {TILE_WIDTH, TILE_HEIGHT};
+    _startPos = {-1, -1};
+    _size = {TILE_WIDTH, TILE_HEIGHT};
 }
 
 void Cursor::render()
 {
-    rectangle.setPosition(pos);
-    rectangle.setSize(size);
-    rectangle.setTexture(&cursorTextures[0]);
-    rectangle.setTextureRect({0, 0, static_cast<int>(size.x), static_cast<int>(size.y)});
+    _rectangle.setPosition(_pos);
+    _rectangle.setSize(_size);
+    _rectangle.setTexture(&_cursorTextures[_currentTexture]);
+    _rectangle.setTextureRect({0, 0, static_cast<int>(_size.x), static_cast<int>(_size.y)});
 
 
-    window.draw(rectangle);
+    window.draw(_rectangle);
 }
 

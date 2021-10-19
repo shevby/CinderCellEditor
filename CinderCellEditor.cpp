@@ -71,11 +71,22 @@ int CinderCellEditor::exec()
 
     auto avarageFrameRenderTime = 0.f;
 
+    if(_mode == Modes::EDIT) {
+        ImGui::SFML::Init(_window);
+        ImGui::GetIO().FontGlobalScale = 2;
+    }
+
     while (_window.isOpen()) {
         deltaTime = clock.getElapsedTime().asSeconds();
 
-        clock.restart();
         _input.exec();
+
+        if(_mode == Modes::EDIT) {
+            ImGui::SFML::Update(_window, clock.restart());
+        }
+        else {
+            clock.restart();
+        }
 
         _window.clear();
 
@@ -88,18 +99,55 @@ int CinderCellEditor::exec()
         }
 
         _window.setView(_camera);
+
+        if(_mode == Modes::EDIT) {
+            drawGui();
+        }
+
+        ImGui::SFML::Render(_window);
+
         _window.display();
+
+
 
 
 //        std::cout << clock.getElapsedTime().asSeconds() << std::endl;
 
     }
 
-
+    ImGui::SFML::Shutdown();
 
     return 0;
 }
 
+
+
+
+
+
+void CinderCellEditor::drawGui()
+{
+    ImGui::Begin("Sample window"); // создаём окно
+    
+    DRAW_CURSOR_SETTER(Cinder::Biomes::WATER)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::FIELD)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::FOREST)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::ROCK)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::HIGH_ROCK)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::GLACIER)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::SWAMP)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::DESERT)
+    DRAW_CURSOR_SETTER(Cinder::Biomes::SAVANNA)
+
+    ImGui::SameLine();
+    ImGui::NewLine();
+    
+    if(ImGui::Button("TODO: Save")) {
+        std::cout << "TODO: Implement saving" << std::endl;
+    }
+
+    ImGui::End();
+}
 
 void CinderCellEditor::moveUp()
 {
