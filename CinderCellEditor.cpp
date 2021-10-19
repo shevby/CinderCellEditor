@@ -21,7 +21,10 @@ void CinderCellEditor::edit(std::string filepath)
 {
     _mode = Modes::EDIT;
 
+    _input.handleImgui();
+
     _items.push_back(std::make_shared<CinderMap>(_window, _textures, filepath));
+
     _cursor = std::make_shared<Cursor>(_window, _textures);
     _cursor->onDrawAreaSelected(std::bind(&CinderCellEditor::addOverlay, this));
 
@@ -102,9 +105,9 @@ int CinderCellEditor::exec()
 
         if(_mode == Modes::EDIT) {
             drawGui();
+            ImGui::SFML::Render(_window);
         }
 
-        ImGui::SFML::Render(_window);
 
         _window.display();
 
@@ -115,7 +118,9 @@ int CinderCellEditor::exec()
 
     }
 
-    ImGui::SFML::Shutdown();
+    if(_mode == Modes::EDIT) {
+        ImGui::SFML::Shutdown();
+    }
 
     return 0;
 }

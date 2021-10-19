@@ -41,6 +41,8 @@ std::vector<MouseListener> mouseListeners;
 bool leftButtonPressed = false;
 bool rightButtonPressed = false;
 
+bool _handleImgui = false;
+
 
 public:
 
@@ -58,7 +60,9 @@ void listenKeys(sf::Keyboard::Key key, std::function<void()> callback);
  * \param callback
  */
 void listenMouse(std::function<void(MouseEvent)> callback);
+void handleImgui();
 void exec();
+
 
 };
 

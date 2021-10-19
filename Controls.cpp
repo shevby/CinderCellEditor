@@ -17,6 +17,11 @@ void Controls::listenMouse(std::function<void(MouseEvent)> callback)
     this->mouseListeners.push_back(MouseListener{callback});
 }
 
+void Controls::handleImgui() 
+{
+    _handleImgui = true;
+}
+
 void Controls::exec()
 {
     sf::Event event{};
@@ -25,10 +30,13 @@ void Controls::exec()
     mouseEvent.wheelDelta = 0;
 
     if (window.pollEvent(event)) {
-        ImGui::SFML::ProcessEvent(event);
-        
-        if(ImGui::GetIO().WantCaptureMouse) {
-            return;
+
+        if(_handleImgui) {
+            ImGui::SFML::ProcessEvent(event);
+
+            if(ImGui::GetIO().WantCaptureMouse) {
+                return;
+            }
         }
 
         if(event.type == sf::Event::Closed) {
