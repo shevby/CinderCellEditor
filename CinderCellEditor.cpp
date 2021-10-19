@@ -132,19 +132,24 @@ int CinderCellEditor::exec()
 
 void CinderCellEditor::drawGui()
 {
-    ImGui::Begin("Sample window"); // создаём окно
-    
-    DRAW_CURSOR_SETTER(Cinder::Biomes::WATER)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::FIELD)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::FOREST)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::ROCK)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::HIGH_ROCK)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::GLACIER)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::SWAMP)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::DESERT)
-    DRAW_CURSOR_SETTER(Cinder::Biomes::SAVANNA)
+    ImGui::Begin("Edit");
 
+    DRAW_CURSOR_SETTER(Cinder::Biomes::WATER);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::FIELD);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::FOREST);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::ROCK);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::HIGH_ROCK);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::GLACIER);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::SWAMP);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::DESERT);
+    DRAW_CURSOR_SETTER(Cinder::Biomes::SAVANNA);
+
+    ImGui::NewLine();
+
+    ImGui::Text("Current:");
     ImGui::SameLine();
+    DRAW_CURSOR_SETTER(_cursor->getCurrentTexture());
+    ImGui::NewLine();
     ImGui::NewLine();
     
     if(ImGui::Button("TODO: Save")) {
