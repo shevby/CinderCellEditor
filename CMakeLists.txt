@@ -30,3 +30,6 @@ add_executable(cce ${SOURCES})
 target_link_libraries (cce sfml-graphics sfml-window sfml-system)
 
 add_compile_definitions(VERSION="${VERSION}")
+
+# Resources
+file(COPY resources DESTINATION ${CMAKE_BINARY_DIR})
