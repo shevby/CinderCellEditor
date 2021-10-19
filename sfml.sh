@@ -62,6 +62,7 @@ do
             mv -v SFML/build/lib bin/sfml
             mv -v SFML/include bin/sfml
             mv SFML/license.md bin/sfml
+            cp -r SFML/extlibs/libs-osx/Frameworks bin/sfml/
             mv -v SFML/extlibs/libs-osx/Frameworks/* bin/sfml/lib
             rm -rfv SFML
             printf "\n\n\nSFML has been configured"
