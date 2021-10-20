@@ -4,6 +4,8 @@
 
 CinderCellEditor::CinderCellEditor() : _input{_window}
 {
+    _outputFile = new char[255];
+
     for(auto path : TEXTURE_PATHS) {
         _textures.push_back(sf::Texture{});
         _textures[_textures.size() - 1].loadFromFile(path);
@@ -14,12 +16,18 @@ CinderCellEditor::CinderCellEditor() : _input{_window}
 
 CinderCellEditor::~CinderCellEditor()
 {
-
+    delete[] _outputFile;
 }
 
 void CinderCellEditor::edit(std::string filepath)
 {
     _mode = Modes::EDIT;
+
+    for(int i = 0; i < filepath.size(); i++) {
+        _outputFile[i] = filepath[i];
+    }
+
+    _outputFile[filepath.size()] = '\0';
 
     _input.handleImgui();
 
@@ -132,6 +140,7 @@ int CinderCellEditor::exec()
 
 void CinderCellEditor::drawGui()
 {
+
     ImGui::Begin("Edit");
 
     DRAW_CURSOR_SETTER(Cinder::Biomes::WATER);
@@ -152,6 +161,10 @@ void CinderCellEditor::drawGui()
     ImGui::NewLine();
     ImGui::NewLine();
     
+    ImGui::InputText("->output file", _outputFile, 255);
+        
+    
+
     if(ImGui::Button("TODO: Save")) {
         std::cout << "TODO: Implement saving" << std::endl;
     }
@@ -225,6 +238,11 @@ void CinderCellEditor::handleMouse(MouseEvent event)
 void CinderCellEditor::addOverlay()
 {
     _items.push_back(std::make_shared<Overlay>(*(_cursor.get())));
+}
+
+void CinderCellEditor::save()
+{
+    sf::Vector2<uint8_t> outputBuffer;
 }
 
 

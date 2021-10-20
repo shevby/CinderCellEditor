@@ -58,6 +58,9 @@ void Controls::exec()
 
     }
 
+    if(ImGui::GetIO().WantCaptureMouse) {
+        return;
+    }
 
     leftButtonPressed = sf::Mouse::isButtonPressed(sf::Mouse::Left);
     rightButtonPressed = sf::Mouse::isButtonPressed(sf::Mouse::Right);

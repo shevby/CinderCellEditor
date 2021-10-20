@@ -59,6 +59,7 @@ class CinderCellEditor
     std::vector<std::shared_ptr<Item>> _items;
     std::vector<sf::Texture> _textures;
     std::shared_ptr<Cursor> _cursor;
+    char * _outputFile;
 
     float _zoom = 1;
 
@@ -144,6 +145,7 @@ public:
       */
      void handleMouse(MouseEvent event);
      void addOverlay();
+     void save();
 };
 
 #endif // CINDERCELLEDITOR_H
