@@ -4,6 +4,8 @@
 
 CinderCellEditor::CinderCellEditor() : _input{_window}
 {
+    _outputFile = new char[255];
+
     for(auto path : TEXTURE_PATHS) {
         _textures.push_back(sf::Texture{});
         _textures[_textures.size() - 1].loadFromFile(path);
@@ -14,12 +16,18 @@ CinderCellEditor::CinderCellEditor() : _input{_window}
 
 CinderCellEditor::~CinderCellEditor()
 {
-
+    delete[] _outputFile;
 }
 
 void CinderCellEditor::edit(std::string filepath)
 {
     _mode = Modes::EDIT;
+
+    for(int i = 0; i < filepath.size(); i++) {
+        _outputFile[i] = filepath[i];
+    }
+
+    _outputFile[filepath.size()] = '\0';
 
     _input.handleImgui();
 
@@ -27,6 +35,8 @@ void CinderCellEditor::edit(std::string filepath)
 
     _cursor = std::make_shared<Cursor>(_window, _textures);
     _cursor->onDrawAreaSelected(std::bind(&CinderCellEditor::addOverlay, this));
+    _cursor->mapHeight = dynamic_cast<CinderMap*>(_items[0].get())->height;
+    _cursor->mapWidth = dynamic_cast<CinderMap*>(_items[0].get())->width;
 
     _input.listenKeys(sf::Keyboard::W, std::bind(&CinderCellEditor::moveUp, this));
     _input.listenKeys(sf::Keyboard::S, std::bind(&CinderCellEditor::moveDown, this));
@@ -132,6 +142,7 @@ int CinderCellEditor::exec()
 
 void CinderCellEditor::drawGui()
 {
+
     ImGui::Begin("Edit");
 
     DRAW_CURSOR_SETTER(Cinder::Biomes::WATER);
@@ -150,10 +161,13 @@ void CinderCellEditor::drawGui()
     ImGui::SameLine();
     DRAW_CURSOR_SETTER(_cursor->getCurrentTexture());
     ImGui::NewLine();
-    ImGui::NewLine();
     
-    if(ImGui::Button("TODO: Save")) {
-        std::cout << "TODO: Implement saving" << std::endl;
+    ImGui::InputText("->output file", _outputFile, 255);
+        
+    
+
+    if(ImGui::Button("Save")) {
+        this->save();
     }
 
     ImGui::End();
@@ -225,6 +239,39 @@ void CinderCellEditor::handleMouse(MouseEvent event)
 void CinderCellEditor::addOverlay()
 {
     _items.push_back(std::make_shared<Overlay>(*(_cursor.get())));
+}
+
+void CinderCellEditor::save()
+{
+    Cinder::Map map;
+
+    CinderMap* cinderMap = dynamic_cast<CinderMap*>(_items[0].get());
+
+    map.mapType = cinderMap->mapType;
+    map.width = cinderMap->width;
+    map.height = cinderMap->height;
+
+    map.map.resize(cinderMap->height);
+
+    for(auto & r : map.map) {
+        r.resize(cinderMap->width);
+    }
+
+    for(auto & item : _items) {
+        SaveMap saveMap = item.get()->saveBiom();
+        std::cout << saveMap << std::endl;
+
+        for(int y = 0; y < saveMap.height; y++) {
+            for(int x = 0; x < saveMap.width; x++) {
+                map.map[saveMap.y + y][saveMap.x + x] = saveMap.complex ? saveMap.complexMap[y][x] : saveMap.tile;
+            }
+        }
+
+    }
+
+    map.save(_outputFile);
+
+
 }
 
 

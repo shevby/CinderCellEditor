@@ -18,6 +18,7 @@ public:
     Overlay(sf::RenderWindow &w, std::vector<sf::Texture> &t);
     Overlay(Cursor & c);
     virtual void render() override;
+    virtual SaveMap saveBiom() override;
 };
 
 #endif // OVERLAY_H

@@ -9,23 +9,46 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w,
 
 CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::string path) : CinderMap{w, t}
 {
-    filePath = path;
 
-    std::ifstream input{filePath, std::ios::binary};
+    struct _Map {
+        Cinder::MapTypes mapType;
+        uint32_t width;
+        uint32_t height;
+        uint8_t map;
+    };
+
+    _filePath = path;
+
+    std::ifstream input{_filePath, std::ios::binary};
     std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(input), {});
 
-    Cinder::Map * mapStruct = (Cinder::Map*)&buffer[0];
+    _Map * mapStruct = (_Map*)&buffer[0];
+
+    mapType = mapStruct->mapType;
     width = mapStruct->width;
     height = mapStruct->height;
+
+    _map.width = width;
+    _map.height = height;
+    _map.mapType = mapType;
 
     uint8_t * mapData = (uint8_t*)&mapStruct->map;
 
     sf::Image img{};
-    img.create(width * TILE_WIDTH, height * TILE_HEIGHT);
+    img.create(_map.width * TILE_WIDTH, _map.height * TILE_HEIGHT);
 
-    for(int tileIndex = 0; tileIndex < height * width; tileIndex++) {
-        uint32_t yCoord = tileIndex / width;
-        uint32_t xCoord = tileIndex - (yCoord * width);
+
+    _map.map.resize(_map.height);
+
+    for(auto & m : _map.map) {
+        m.resize(_map.width);
+    }
+
+    for(int tileIndex = 0; tileIndex < _map.height * _map.width; tileIndex++) {
+        uint32_t yCoord = tileIndex / _map.width;
+        uint32_t xCoord = tileIndex - (yCoord * _map.width);
+
+        _map.map[yCoord][xCoord] = mapData[tileIndex];
 
         sf::Image tileImage = textures[mapData[tileIndex]].copyToImage();
         int tileY = 0;
@@ -41,20 +64,20 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
     }
 
 
-    texture.loadFromImage(img);
+    _texture.loadFromImage(img);
 
-    map = sf::RectangleShape{sf::Vector2f(width * TILE_WIDTH, height * TILE_HEIGHT)};
-    map.setTexture(&texture);
+    _mapRect = sf::RectangleShape{sf::Vector2f(_map.width * TILE_WIDTH, _map.height * TILE_HEIGHT)};
+    _mapRect.setTexture(&_texture);
 
 }
 
 int CinderMap::toPng()
 {
-    sf::Image img = texture.copyToImage();
+    sf::Image img = _texture.copyToImage();
 
-    std::cout << "\nConverting " << filePath << " to PNG. Output file: " << filePath << ".png ..." << std::endl;
+    std::cout << "\nConverting " << _filePath << " to PNG. Output file: " << _filePath << ".png ..." << std::endl;
 
-    auto ret = img.saveToFile(filePath + ".png");
+    auto ret = img.saveToFile(_filePath + ".png");
 
     if(ret) {
         std::cout << "Done" << std::endl;
@@ -74,7 +97,24 @@ CinderMap::~CinderMap()
 
 void CinderMap::render()
 {
-    window.draw(map);
+    window.draw(_mapRect);
+}
+
+SaveMap CinderMap::saveBiom()
+{
+    SaveMap saveMap;
+
+    saveMap.width = _map.width;
+    saveMap.height = _map.height;
+
+    saveMap.x = 0;
+    saveMap.y = 0;
+
+    saveMap.complex = true;
+
+    saveMap.complexMap = _map.map;
+
+    return saveMap;
 }
 
 
