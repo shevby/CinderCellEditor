@@ -28,7 +28,6 @@ void CinderCellEditor::edit(std::string filepath)
     }
 
     _outputFile[filepath.size()] = '\0';
-    _outputFile[0] = 'f';
 
     _input.handleImgui();
 
@@ -36,6 +35,8 @@ void CinderCellEditor::edit(std::string filepath)
 
     _cursor = std::make_shared<Cursor>(_window, _textures);
     _cursor->onDrawAreaSelected(std::bind(&CinderCellEditor::addOverlay, this));
+    _cursor->mapHeight = dynamic_cast<CinderMap*>(_items[0].get())->height;
+    _cursor->mapWidth = dynamic_cast<CinderMap*>(_items[0].get())->width;
 
     _input.listenKeys(sf::Keyboard::W, std::bind(&CinderCellEditor::moveUp, this));
     _input.listenKeys(sf::Keyboard::S, std::bind(&CinderCellEditor::moveDown, this));

@@ -70,6 +70,11 @@ void Cursor::handleMouse(MouseEvent event)
     position.x = static_cast<int>(position.x - static_cast<int>(position.x) % 16);
     position.y = static_cast<int>(position.y - static_cast<int>(position.y) % 16);
 
+    if(position.x < 0) position.x = 0;
+    if(position.y < 0) position.y = 0;
+    if(position.x > mapWidth * TILE_WIDTH) position.x = mapWidth * TILE_WIDTH - TILE_WIDTH;
+    if(position.y > mapHeight * TILE_HEIGHT) position.y = mapHeight * TILE_HEIGHT - TILE_HEIGHT;
+
     if(event.left && _startPos.x >= 0 && _startPos.y >= 0) {
         if(_onDrawAreaSelectedCallback != nullptr) {
             _onDrawAreaSelectedCallback();

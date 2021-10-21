@@ -14,6 +14,7 @@ class Cursor : public Item
     std::vector<sf::Texture> _cursorTextures;
     std::function<void()> _onDrawAreaSelectedCallback{nullptr};
 
+
 public:
     Cursor(sf::RenderWindow &w, std::vector<sf::Texture> &t);
     /*!
@@ -37,6 +38,8 @@ public:
     const sf::Vector2f &getPos() const;
     const sf::Vector2f &getSize() const;
     uint8_t getCurrentTexture() const;
+    uint32_t mapWidth;
+    uint32_t mapHeight;
 
     /*!
      * \brief onDrawAreaSelected
