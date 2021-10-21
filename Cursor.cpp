@@ -49,6 +49,11 @@ void Cursor::setCurrentTexture(uint8_t newCurrentTexture)
     _currentTexture = newCurrentTexture;
 }
 
+SaveMap Cursor::saveBiom()
+{
+    return SaveMap{};
+}
+
 Cursor::Cursor(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w, t}
 {
     for(auto texture : textures) {

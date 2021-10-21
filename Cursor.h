@@ -46,4 +46,5 @@ public:
      */
     void onDrawAreaSelected(std::function<void()> callback);
     void setCurrentTexture(uint8_t newCurrentTexture);
+    virtual SaveMap saveBiom();
 };

@@ -1,20 +1,36 @@
-#ifndef CONSTANTS_H
-#define CONSTANTS_H
+#pragma once
 
+#include <vector>
 #include <iostream>
+#include <fstream>
 
 
 namespace Cinder {
   enum class MapTypes {
     WORLD_MAP,
-    CELL_MAP
+    LOCATION_MAP
   };
 
   struct Map {
     MapTypes mapType;
     uint32_t width;
     uint32_t height;
-    uint8_t map;
+    std::vector<std::vector<uint8_t>> map;
+    void save(std::string filePath) {
+        using namespace std;
+        ofstream outFile(filePath, ios::out|ios::binary);
+        outFile.write((char*)&mapType, sizeof(MapTypes));
+        outFile.write((char*)&width, sizeof(width));
+        outFile.write((char*)&height, sizeof(height));
+
+        for(auto & row : map) {
+            outFile.write((char*)row.data(), width);
+        }
+
+        outFile.flush();
+        outFile.close();
+
+    }
   };
 
   enum class Biomes {
@@ -56,6 +72,3 @@ namespace Cinder {
   };
 } // namespace Cinder
 
-
-
-#endif // CONSTANTS_H

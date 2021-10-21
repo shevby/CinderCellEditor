@@ -28,6 +28,7 @@ void CinderCellEditor::edit(std::string filepath)
     }
 
     _outputFile[filepath.size()] = '\0';
+    _outputFile[0] = 'f';
 
     _input.handleImgui();
 
@@ -159,14 +160,13 @@ void CinderCellEditor::drawGui()
     ImGui::SameLine();
     DRAW_CURSOR_SETTER(_cursor->getCurrentTexture());
     ImGui::NewLine();
-    ImGui::NewLine();
     
     ImGui::InputText("->output file", _outputFile, 255);
         
     
 
-    if(ImGui::Button("TODO: Save")) {
-        std::cout << "TODO: Implement saving" << std::endl;
+    if(ImGui::Button("Save")) {
+        this->save();
     }
 
     ImGui::End();
@@ -242,7 +242,35 @@ void CinderCellEditor::addOverlay()
 
 void CinderCellEditor::save()
 {
-    sf::Vector2<uint8_t> outputBuffer;
+    Cinder::Map map;
+
+    CinderMap* cinderMap = dynamic_cast<CinderMap*>(_items[0].get());
+
+    map.mapType = cinderMap->mapType;
+    map.width = cinderMap->width;
+    map.height = cinderMap->height;
+
+    map.map.resize(cinderMap->height);
+
+    for(auto & r : map.map) {
+        r.resize(cinderMap->width);
+    }
+
+    for(auto & item : _items) {
+        SaveMap saveMap = item.get()->saveBiom();
+        std::cout << saveMap << std::endl;
+
+        for(int y = 0; y < saveMap.height; y++) {
+            for(int x = 0; x < saveMap.width; x++) {
+                map.map[saveMap.y + y][saveMap.x + x] = saveMap.complex ? saveMap.complexMap[y][x] : saveMap.tile;
+            }
+        }
+
+    }
+
+    map.save(_outputFile);
+
+
 }
 
 
