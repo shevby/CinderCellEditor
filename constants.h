@@ -45,6 +45,64 @@ namespace Cinder {
       SAVANNA,
   };
 
+  enum class LocationTiles {
+      WATER = 0,
+      GRAVEL,
+      GROUND,
+      GRASS,
+      SAND,
+      ROCK,
+      LAVA,
+      ICE,
+      SNOW,
+      DIRT
+  };
+
+    enum class NaturalObjects {
+
+        TREE_BEGIN = 0,
+        OAK = TREE_BEGIN,
+        MAPLE,
+        SAKURA,
+        PINE,
+        MAHOGANY,
+        PALM,
+        COCOA,
+        TREE_END,
+
+        BUSH_BEGIN,
+        HOPS = BUSH_BEGIN,
+        GRAPE,
+        LILAC,
+        WEED,
+        BUSH_END,
+
+        VEGETABLES_BEGIN,
+        POTATO = VEGETABLES_BEGIN,
+        CARROT,
+        CABBAGE,
+        SUNFLOWER,
+        VEGETABLES_END,
+
+        MASHROOMS_BEGIN,
+        BOLETUS = MASHROOMS_BEGIN,
+        FLY_AGARIC,
+        SHROOMS,
+        MASHROOMS_END,
+
+        ORES_BEGIN,
+        STONE=ORES_BEGIN,
+        COAL,
+        DIAMOND,
+        IRON,
+        COPPER,
+        COFFEE,
+        SAND,
+        GROUND,
+        CINDER, //Something like Spice from Dune
+        ORES_END
+    };
+
   enum class TileBorder {
       NONE = 0,
       LEFT,
