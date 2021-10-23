@@ -31,7 +31,18 @@ namespace Cinder {
     struct BiomCell {
         uint8_t tile: 5;
         uint8_t river: 3; //RiverDiraction
+        
+        friend std::ostream& operator<<(std::ostream& os, const BiomCell& bc) {
+            os << "<BiomCell" << std::endl;
+            os << "tile: " << static_cast<uint32_t>(bc.tile) << std::endl;
+            os << "river: " << static_cast<uint32_t>(bc.river) << std::endl;
+            os << ">" << std::endl;
+
+            return os;
+        }
     };
+
+    static_assert(sizeof(BiomCell) == sizeof(uint8_t), "BiomCell and uint8_t sizes mismatch");
 
     struct Map {
         MapTypes mapType;

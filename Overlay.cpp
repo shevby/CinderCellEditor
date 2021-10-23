@@ -28,7 +28,7 @@ SaveMap Overlay::saveBiom()
     SaveMap saveMap;
 
     saveMap.complex = false;
-    saveMap.tile = this->currentTexture;
+    saveMap.tile.tile = (uint8_t)this->currentTexture;
 
     saveMap.x = pos.x / TILE_WIDTH;
     saveMap.y = pos.y / TILE_HEIGHT;

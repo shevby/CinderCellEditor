@@ -22,7 +22,7 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
     std::ifstream input{_filePath, std::ios::binary};
     std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(input), {});
 
-    _Map * mapStruct = (_Map*)&buffer[0];
+    Cinder::Map * mapStruct = (Cinder::Map*)&buffer[0];
 
     mapType = mapStruct->mapType;
     width = mapStruct->width;
@@ -48,7 +48,7 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
         uint32_t yCoord = tileIndex / _map.width;
         uint32_t xCoord = tileIndex - (yCoord * _map.width);
 
-        _map.map[yCoord][xCoord] = mapData[tileIndex];
+        _map.map[yCoord][xCoord] = *reinterpret_cast<Cinder::BiomCell*>(&mapData[tileIndex]);
 
         sf::Image tileImage = textures[mapData[tileIndex]].copyToImage();
         int tileY = 0;

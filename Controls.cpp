@@ -58,7 +58,7 @@ void Controls::exec()
 
     }
 
-    if(ImGui::GetIO().WantCaptureMouse) {
+    if(_handleImgui && ImGui::GetIO().WantCaptureMouse) {
         return;
     }
 
