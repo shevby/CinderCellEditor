@@ -54,9 +54,9 @@ SaveMap Cursor::saveBiom()
     return SaveMap{};
 }
 
-Cursor::Cursor(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w, t}
+Cursor::Cursor(sf::RenderWindow &w) : Item{w}
 {
-    for(auto texture : textures) {
+    for(auto texture : _resources->textures()) {
         _cursorTextures.push_back(toCursorTexture(texture));
     }
 
@@ -67,8 +67,8 @@ Cursor::Cursor(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w, t}
 void Cursor::handleMouse(MouseEvent event)
 {
     auto position = window.mapPixelToCoords(event.pos);
-    position.x = static_cast<int>(position.x - static_cast<int>(position.x) % 16);
-    position.y = static_cast<int>(position.y - static_cast<int>(position.y) % 16);
+    position.x = static_cast<int>(position.x - static_cast<int>(position.x) % TILE_WIDTH);
+    position.y = static_cast<int>(position.y - static_cast<int>(position.y) % TILE_HEIGHT);
 
     if(position.x < 0) position.x = 0;
     if(position.y < 0) position.y = 0;

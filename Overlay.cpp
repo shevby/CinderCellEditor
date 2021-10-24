@@ -1,6 +1,6 @@
 #include "Overlay.h"
 
-Overlay::Overlay(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w, t}
+Overlay::Overlay(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w}
 {
 
 }
@@ -14,7 +14,7 @@ Overlay::Overlay(Cursor &c) : Item{c}
 
     rectangle.setPosition(pos);
     rectangle.setSize(size);
-    rectangle.setTexture(&textures[currentTexture]);
+    rectangle.setTexture(&_resources->textures()[currentTexture]);
     rectangle.setTextureRect({0, 0, static_cast<int>(size.x), static_cast<int>(size.y)});
 }
 

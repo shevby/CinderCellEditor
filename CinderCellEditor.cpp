@@ -6,11 +6,7 @@ CinderCellEditor::CinderCellEditor() : _input{_window}
 {
     _outputFile = new char[255];
 
-    for(auto path : TEXTURE_PATHS) {
-        _textures.push_back(sf::Texture{});
-        _textures[_textures.size() - 1].loadFromFile(path);
-        _textures[_textures.size() - 1].setRepeated(true);
-    }
+    _resources = ResourceManager::getInstance();
 
 }
 
@@ -33,7 +29,7 @@ void CinderCellEditor::edit(std::string filepath)
 
     _items.push_back(std::make_shared<CinderMap>(_window, _textures, filepath));
 
-    _cursor = std::make_shared<Cursor>(_window, _textures);
+    _cursor = std::make_shared<Cursor>(_window);
     _cursor->onDrawAreaSelected(std::bind(&CinderCellEditor::addOverlay, this));
     _cursor->mapHeight = dynamic_cast<CinderMap*>(_items[0].get())->height;
     _cursor->mapWidth = dynamic_cast<CinderMap*>(_items[0].get())->width;

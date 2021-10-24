@@ -9,6 +9,7 @@
 
 #include "constants.h"
 #include "Controls.h"
+#include "ResourceManager.h"
 
 const int TILE_WIDTH = 32;
 const int TILE_HEIGHT = 32;
@@ -48,13 +49,13 @@ protected:
      * Reference to the main application window
      */
     sf::RenderWindow & window;
-    /*!
-     * \brief textures
-     * Reference to the textures of tiles
-     */
-    std::vector<sf::Texture> & textures;
+    std::shared_ptr<ResourceManager> _resources;
+    
+
 public:
-    Item(sf::RenderWindow & w, std::vector<sf::Texture> & t) : window{w}, textures{t}{};
+    Item(sf::RenderWindow & w) : window{w} {
+        _resources = ResourceManager::getInstance();
+    };
     virtual ~Item(){};
     virtual void render() = 0;
     virtual SaveMap saveBiom() = 0;

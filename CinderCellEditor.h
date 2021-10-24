@@ -14,10 +14,13 @@
 #include "Controls.h"
 #include "Cursor.h"
 #include "Overlay.h"
+#include "ResourceManager.h"
+
 #include "constants.h"
 
+
 #define DRAW_CURSOR_SETTER(TEXTURE) \
-    if(ImGui::ImageButton(_textures[static_cast<int>(TEXTURE)], sf::Vector2f{64, 64})) {\
+    if(ImGui::ImageButton(_resources->textures()[static_cast<int>(TEXTURE)], sf::Vector2f{64, 64})) {\
         _cursor->setCurrentTexture(static_cast<int>(TEXTURE));\
     }\
     ImGui::SameLine();
@@ -29,18 +32,6 @@ enum class Modes {
     VIEW = 0,
     TO_PNG,
     EDIT
-};
-
-const std::vector<std::string> TEXTURE_PATHS = {
-    "resources/textures/biomes/water.png",
-    "resources/textures/biomes/field.png",
-    "resources/textures/biomes/forest.png",
-    "resources/textures/biomes/rock.png",
-    "resources/textures/biomes/highrock.png",
-    "resources/textures/biomes/glacier.png",
-    "resources/textures/biomes/swamp.png",
-    "resources/textures/biomes/desert.png",
-    "resources/textures/biomes/savanna.png"
 };
 
 const float CAMERA_MOVE_SPEED = 1000;
@@ -58,6 +49,9 @@ class CinderCellEditor
     Controls _input;
     std::vector<std::shared_ptr<Item>> _items;
     std::vector<sf::Texture> _textures;
+
+    std::shared_ptr<ResourceManager> _resources;
+
     std::shared_ptr<Cursor> _cursor;
     char * _outputFile;
 

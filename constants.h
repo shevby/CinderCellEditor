@@ -13,8 +13,7 @@ namespace Cinder {
     };
 
     enum class RiverDiraction {
-        NO_RIVER = 0,
-        TOP_DOWN,
+        TOP_DOWN = 0,
         DOWN_TOP = TOP_DOWN,
         TOP_LEFT,
         LEFT_TOP = TOP_LEFT,
@@ -25,7 +24,8 @@ namespace Cinder {
         RIGHT_DOWN,
         DOWN_RIGHT = RIGHT_DOWN,
         LEFT_DOWN,
-        DOWN_LEFT = LEFT_DOWN
+        DOWN_LEFT = LEFT_DOWN,
+        NO_RIVER
     };
 
 #pragma pack(push, 1)
