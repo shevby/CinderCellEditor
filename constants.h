@@ -28,11 +28,12 @@ namespace Cinder {
         DOWN_LEFT = LEFT_DOWN
     };
 
-    struct BiomCell {
+#pragma pack(push, 1)
+    struct BiomeCell {
         uint8_t tile: 5;
         uint8_t river: 3; //RiverDiraction
         
-        friend std::ostream& operator<<(std::ostream& os, const BiomCell& bc) {
+        friend std::ostream& operator<<(std::ostream& os, const BiomeCell& bc) {
             os << "<BiomCell" << std::endl;
             os << "tile: " << static_cast<uint32_t>(bc.tile) << std::endl;
             os << "river: " << static_cast<uint32_t>(bc.river) << std::endl;
@@ -41,15 +42,16 @@ namespace Cinder {
             return os;
         }
     };
+#pragma pack(pop)
 
-    static_assert(sizeof(BiomCell) == sizeof(uint8_t), "BiomCell and uint8_t sizes mismatch");
+    static_assert(sizeof(BiomeCell) == sizeof(uint8_t), "BiomCell and uint8_t sizes mismatch");
 
     struct Map {
         MapTypes mapType;
         uint32_t width;
         uint32_t height;
 
-        std::vector<std::vector<BiomCell>> map;
+        std::vector<std::vector<BiomeCell>> map;
 
         void save(std::string filePath) {
             using namespace std;

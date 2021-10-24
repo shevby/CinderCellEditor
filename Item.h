@@ -19,9 +19,9 @@ struct SaveMap {
     uint32_t y;
     uint32_t width;
     uint32_t height;
-    Cinder::BiomCell tile;
+    Cinder::BiomeCell tile;
     bool complex = false;
-    std::vector<std::vector<Cinder::BiomCell>> complexMap;
+    std::vector<std::vector<Cinder::BiomeCell>> complexMap;
 
     friend std::ostream& operator<<(std::ostream& os, const SaveMap& sm) {
         os << "x: " << sm.x << std::endl;
