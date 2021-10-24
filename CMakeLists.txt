@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(SOURCES
     main.cpp
+    ResourceManager.cpp
     CinderCellEditor.cpp
     Item.cpp
     CinderMap.cpp

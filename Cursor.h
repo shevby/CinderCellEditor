@@ -16,7 +16,7 @@ class Cursor : public Item
 
 
 public:
-    Cursor(sf::RenderWindow &w, std::vector<sf::Texture> &t);
+    Cursor(sf::RenderWindow &w);
     /*!
      * \brief render
      * Renders the cursor

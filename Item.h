@@ -9,9 +9,10 @@
 
 #include "constants.h"
 #include "Controls.h"
+#include "ResourceManager.h"
 
-const int TILE_WIDTH = 16;
-const int TILE_HEIGHT = 16;
+const int TILE_WIDTH = 32;
+const int TILE_HEIGHT = 32;
 
 
 struct SaveMap {
@@ -19,16 +20,16 @@ struct SaveMap {
     uint32_t y;
     uint32_t width;
     uint32_t height;
-    uint8_t tile;
+    Cinder::BiomeCell tile;
     bool complex = false;
-    std::vector<std::vector<uint8_t>> complexMap;
+    std::vector<std::vector<Cinder::BiomeCell>> complexMap;
 
     friend std::ostream& operator<<(std::ostream& os, const SaveMap& sm) {
         os << "x: " << sm.x << std::endl;
         os << "y: " << sm.y << std::endl;
         os << "width: " << sm.width << std::endl;
         os << "height: " << sm.height << std::endl;
-        os << "tile: " << (uint32_t)sm.tile << std::endl;
+        os << "tile: " << sm.tile << std::endl;
         os << "complex: " << (bool)sm.complex << std::endl;
         os << std::endl;
 
@@ -48,13 +49,13 @@ protected:
      * Reference to the main application window
      */
     sf::RenderWindow & window;
-    /*!
-     * \brief textures
-     * Reference to the textures of tiles
-     */
-    std::vector<sf::Texture> & textures;
+    std::shared_ptr<ResourceManager> _resources;
+    
+
 public:
-    Item(sf::RenderWindow & w, std::vector<sf::Texture> & t) : window{w}, textures{t}{};
+    Item(sf::RenderWindow & w) : window{w} {
+        _resources = ResourceManager::getInstance();
+    };
     virtual ~Item(){};
     virtual void render() = 0;
     virtual SaveMap saveBiom() = 0;

@@ -2,7 +2,7 @@
 
 
 
-CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w, t}
+CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t) : Item{w}
 {
 
 }
@@ -17,12 +17,23 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
         uint8_t map;
     };
 
+    std::vector<sf::Image> tileImages;
+    std::vector<sf::Image> tileRiverImages;
+
+    for(int i = 0; i < _resources->textures().size(); i++) {
+        tileImages.push_back(_resources->textures()[i].copyToImage());
+    }
+
+    for(int i = 0; i < _resources->riverTextures().size(); i++) {
+        tileRiverImages.push_back(_resources->riverTextures()[i].copyToImage());
+    }
+    
     _filePath = path;
 
     std::ifstream input{_filePath, std::ios::binary};
     std::vector<uint8_t> buffer(std::istreambuf_iterator<char>(input), {});
 
-    _Map * mapStruct = (_Map*)&buffer[0];
+    Cinder::Map * mapStruct = (Cinder::Map*)&buffer[0];
 
     mapType = mapStruct->mapType;
     width = mapStruct->width;
@@ -32,7 +43,7 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
     _map.height = height;
     _map.mapType = mapType;
 
-    uint8_t * mapData = (uint8_t*)&mapStruct->map;
+    Cinder::BiomeCell * mapData = (Cinder::BiomeCell*)&mapStruct->map;
 
     sf::Image img{};
     img.create(_map.width * TILE_WIDTH, _map.height * TILE_HEIGHT);
@@ -48,14 +59,26 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
         uint32_t yCoord = tileIndex / _map.width;
         uint32_t xCoord = tileIndex - (yCoord * _map.width);
 
-        _map.map[yCoord][xCoord] = mapData[tileIndex];
+        _map.map[yCoord][xCoord] = *reinterpret_cast<Cinder::BiomeCell*>(&mapData[tileIndex]);
 
-        sf::Image tileImage = textures[mapData[tileIndex]].copyToImage();
         int tileY = 0;
         int tileX = 0;
+
         for(int y = yCoord * TILE_HEIGHT; y < yCoord * TILE_HEIGHT + TILE_HEIGHT; y++) {
             for(int x = xCoord * TILE_WIDTH; x < xCoord * TILE_WIDTH + TILE_WIDTH; x++) {
-                img.setPixel(x, y, tileImage.getPixel(tileX, tileY));
+
+                img.setPixel(x, y, tileImages[_map.map[yCoord][xCoord].tile].getPixel(tileX, tileY));
+
+                if(_map.map[yCoord][xCoord].river != static_cast<uint8_t>(Cinder::RiverDiraction::NO_RIVER)) {
+                    
+                    auto pixel = tileRiverImages[_map.map[yCoord][xCoord].river].getPixel(tileX, tileY);
+
+                    if(pixel.a > 0) { //Draw only if alpha more than 0
+                        img.setPixel(x, y, tileRiverImages[_map.map[yCoord][xCoord].river].getPixel(tileX, tileY));
+                    }
+
+                }
+
                 tileX++;
             }
             tileY++;
