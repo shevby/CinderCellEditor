@@ -12,7 +12,7 @@ namespace Cinder {
         LOCATION_MAP
     };
 
-    enum class RiverDiraction {
+    enum class RiverDirection {
         TOP_DOWN = 0,
         DOWN_TOP = TOP_DOWN,
         TOP_LEFT,
@@ -31,7 +31,7 @@ namespace Cinder {
 #pragma pack(push, 1)
     struct BiomeCell {
         uint8_t tile: 5;
-        uint8_t river: 3; //RiverDiraction
+        uint8_t river: 3; //RiverDirection
         
         friend std::ostream& operator<<(std::ostream& os, const BiomeCell& bc) {
             os << "<BiomCell" << std::endl;

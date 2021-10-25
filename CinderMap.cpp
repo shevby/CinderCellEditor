@@ -69,7 +69,7 @@ CinderMap::CinderMap(sf::RenderWindow &w, std::vector<sf::Texture> &t, std::stri
 
                 img.setPixel(x, y, tileImages[_map.map[yCoord][xCoord].tile].getPixel(tileX, tileY));
 
-                if(_map.map[yCoord][xCoord].river != static_cast<uint8_t>(Cinder::RiverDiraction::NO_RIVER)) {
+                if(_map.map[yCoord][xCoord].river != static_cast<uint8_t>(Cinder::RiverDirection::NO_RIVER)) {
                     
                     auto pixel = tileRiverImages[_map.map[yCoord][xCoord].river].getPixel(tileX, tileY);
 
